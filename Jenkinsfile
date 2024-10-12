@@ -5,6 +5,7 @@ pipeline {
         AWS_REGION = 'ap-south-1' // Your AWS region
         ECR_REPOSITORY = 'hello-world-app' // Your ECR repository name
         IMAGE_TAG = "${env.BUILD_ID}" // Tag using the Jenkins build ID
+        ECR_URI = "851725262025.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}" // ECR URI for convenience
     }
 
     stages {
@@ -27,7 +28,8 @@ pipeline {
             steps {
                 script {
                     // Login to ECR
-                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin 8517252526025.dkr.ecr.${AWS_REGION}.amazonaws.com"
+                    def loginCommand = "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_URI}"
+                    sh loginCommand
                 }
             }
         }
@@ -36,7 +38,7 @@ pipeline {
             steps {
                 script {
                     // Tag the Docker image for ECR
-                    sh "docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} 8517252526025.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}"
+                    sh "docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${ECR_URI}:${IMAGE_TAG}"
                 }
             }
         }
@@ -45,7 +47,7 @@ pipeline {
             steps {
                 script {
                     // Push the Docker image to ECR
-                    sh "docker push 8517252526025.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}"
+                    sh "docker push ${ECR_URI}:${IMAGE_TAG}"
                 }
             }
         }
