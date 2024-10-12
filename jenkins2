@@ -1,0 +1,48 @@
+pipeline {
+    agent any 
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Clone the GitHub repository
+                git 'https://github.com/SuryaGopilli/Hello-world-app.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                // Build the Docker image
+                sh 'docker build -t awsrepo .'
+            }
+        }
+        stage('Login to ECR') {
+            steps {
+                // Log in to AWS ECR
+                script {
+                    // Get the ECR login command and execute it
+                    def loginCommand = sh(script: 'aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 851725262025.dkr.ecr.ap-south-1.amazonaws.com', returnStdout: true).trim()
+                    sh loginCommand
+                }
+            }
+        }
+        stage('Tag Docker Image') {
+            steps {
+                // Tag the Docker image for ECR
+                sh 'docker tag awsrepo:latest 851725262025.dkr.ecr.ap-south-1.amazonaws.com/awsrepo:latest'
+            }
+        }
+        stage('Push Docker Image to ECR') {
+            steps {
+                // Push the Docker image to ECR
+                sh 'docker push 851725262025.dkr.ecr.ap-south-1.amazonaws.com/awsrepo:latest'
+            }
+            post {
+                success {
+                    echo 'Docker image pushed to ECR successfully!'
+                }
+                failure {
+                    echo 'There was an error during the pipeline execution.'
+                }
+            }
+        }
+    }
+}
