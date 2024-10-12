@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_REGION = 'ap-south-1' // Your AWS region
-        ECR_REPOSITORY = 'awsrepo' // Your ECR repository name
+        ECR_REPOSITORY = 'dockimage' // Your ECR repository name
         IMAGE_TAG = "${env.BUILD_ID}" // Tag using the Jenkins build ID
         ECR_URI = "851725262025.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}" // ECR URI for convenience
     }
