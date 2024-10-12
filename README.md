@@ -25,7 +25,7 @@ git remote add origin https://github.com/yourusername/hello-world-app.git
 git push -u origin master
 # after push When prompted for your username, enter your GitHub username. When prompted for your password, paste your Personal Access Token(PAT) instead.
 
-# Build,Run&Testing the Docker image
+# Building, Running, and Testing the Docker Image
 Step 1: Build the Docker Image
 1. Open your terminal and navigate to the hello-world-app directory:
 cd path/to/hello-world-app
@@ -68,7 +68,7 @@ COPY failed: file not found in build context or excluded by .dockerignore: stat 
 //INITIATED BUILD AGAIN
 //BUILD SUCCESS
 
-# DOCKER REPOSITORY NAME WAS TYPOED AS hello-wold-app instead of hello-world-app
+# DOCKER REPOSITORY NAME WAS TYPO AS hello-wold-app instead of hello-world-app
 use command: docker image
 REPOSITORY        TAG       IMAGE ID       CREATED         SIZE
 hello-wold-app   latest    a1b2c3d4e5f6   10 minutes ago  150MB
